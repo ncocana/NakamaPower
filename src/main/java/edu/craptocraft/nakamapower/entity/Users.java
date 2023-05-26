@@ -52,6 +52,10 @@ public class Users {
         this.idCountry = idCountry;
     }
 
+    public Users(int id) {
+        this.id = id;
+    }
+
     public Users(String email, String user, String password, String idCountry) {
         this.email = email;
         this.user = user;

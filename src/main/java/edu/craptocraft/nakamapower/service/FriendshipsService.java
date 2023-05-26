@@ -12,7 +12,7 @@ public interface FriendshipsService {
 
     public Friendships getOne(Friendships idUser);
 
-    public Friendships update(Friendships idUser, Friendships friendship);
+    public Friendships update(int idUser, int idFriend, Friendships friendship);
 
     public void delete(Friendships idUser);
 

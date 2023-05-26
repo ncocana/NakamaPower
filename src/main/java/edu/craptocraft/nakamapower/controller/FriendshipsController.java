@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import edu.craptocraft.nakamapower.entity.Friendships;
 import edu.craptocraft.nakamapower.service.FriendshipsService;
+import jakarta.persistence.NoResultException;
 
 @RestController
 @RequestMapping("/friendships")
@@ -40,10 +41,16 @@ public class FriendshipsController {
         return ResponseEntity.ok(singleFriendship);
     }
 
-    @PutMapping(path = "update/{id}")
-    public ResponseEntity<?> update(@PathVariable Friendships id, @RequestBody Friendships friendship) {
-        Friendships updatedFriendship = this.serviceFriendships.update(id, friendship);
-        return ResponseEntity.status(HttpStatus.CREATED).body(updatedFriendship);
+    @PutMapping(path = "update/user/{idUser}/friend/{idFriend}")
+    public ResponseEntity<?> update(@PathVariable int idUser, @PathVariable int idFriend, @RequestBody Friendships friendship) {
+        try {
+            Friendships updatedFriendship = this.serviceFriendships.update(idUser, idFriend, friendship);
+            return ResponseEntity.status(HttpStatus.OK).body(updatedFriendship);
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.badRequest().body("An error occurred: " + e.getMessage());
+        } catch (NoResultException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Friendship not found");
+        }
     }
 
     @DeleteMapping(path= "delete/{id}")

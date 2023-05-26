@@ -3,15 +3,15 @@ package edu.craptocraft.nakamapower.entity;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class FriendshipId implements Serializable {
+public class FriendshipsId implements Serializable {
     
     private Users idUser;
     private Users idFriend;
 
-    public FriendshipId() {
+    public FriendshipsId() {
     }
 
-    public FriendshipId(Users idUser, Users idFriend) {
+    public FriendshipsId(Users idUser, Users idFriend) {
         this.idUser = idUser;
         this.idFriend = idFriend;
     }
@@ -38,7 +38,7 @@ public class FriendshipId implements Serializable {
             return true;
         if (o == null || getClass() != o.getClass())
             return false;
-        FriendshipId that = (FriendshipId) o;
+        FriendshipsId that = (FriendshipsId) o;
         return Objects.equals(idUser, that.idUser) && Objects.equals(idFriend, that.idFriend);
     }
 
