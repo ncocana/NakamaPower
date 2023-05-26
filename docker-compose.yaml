@@ -13,7 +13,7 @@ services:
     command: ["mvn", "spring-boot:run"]
   database:
     image: mysql:latest
-    container_name: mysql_compose
+    container_name: mysql_nakamapower
     environment:
       - MYSQL_ROOT_PASSWORD=password
       - MYSQL_DATABASE=nakamapower
