@@ -11,7 +11,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "friendship")
 @IdClass(FriendshipId.class)
-public class Friendship {
+public class Friendships {
     
     @Id
     @Column(name = "idUser")
@@ -21,10 +21,10 @@ public class Friendship {
     @Column(name = "idFriend", unique = true, length = 50)
     private Users idFriend;
 
-    public Friendship() {
+    public Friendships() {
     }
 
-    public Friendship(Users idUser, Users idFriend) {
+    public Friendships(Users idUser, Users idFriend) {
         this.idUser = idUser;
         this.idFriend = idFriend;
     }
@@ -51,7 +51,7 @@ public class Friendship {
             return true;
         if (o == null || getClass() != o.getClass())
             return false;
-        Friendship that = (Friendship) o;
+        Friendships that = (Friendships) o;
         return Objects.equals(idUser, that.idUser) && Objects.equals(idFriend, that.idFriend);
     }
 
