@@ -10,10 +10,10 @@ public interface CountriesService {
 
     public List<Countries> getAll();
 
-    public Countries getOne(int id);
+    public Countries getOne(String id);
 
-    public Countries update(int id, Countries country);
+    public Countries update(String id, Countries country);
 
-    public void delete(int id);
+    public void delete(String id);
 
 }
