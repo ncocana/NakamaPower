@@ -3,11 +3,14 @@ package edu.craptocraft.nakamapower.entity;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import edu.craptocraft.nakamapower.service.implementation.UsersIMPL;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -34,18 +37,28 @@ public class Users {
     @Column(name = "session", unique = true, length = 9)
     private Integer session;
     
-    @Column(name = "country", length = 4)
-    private String country;
+    @ManyToOne
+    @JoinColumn(name = "idCountry", nullable = false)
+    private Countries idCountry;
 
     public Users() {}
 
-    public Users(String email, String user, String password, String country) {
+    public Users(String email, String user, String password, Countries idCountry) {
         this.email = email;
         this.user = user;
         this.password = password;
         this.lastLog = null;
         this.session = null;
-        this.country = country;
+        this.idCountry = idCountry;
+    }
+
+    public Users(String email, String user, String password, String idCountry) {
+        this.email = email;
+        this.user = user;
+        this.password = password;
+        this.lastLog = null;
+        this.session = null;
+        this.idCountry = UsersIMPL.getCountry(idCountry);
     }
 
     public int getId() {
@@ -96,12 +109,12 @@ public class Users {
         this.session = session;
     }
 
-    public String getCountry() {
-        return this.country;
+    public Countries getIdCountry() {
+        return this.idCountry;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setIdCountry(Countries idCountry) {
+        this.idCountry = idCountry;
     }
 
     @Override

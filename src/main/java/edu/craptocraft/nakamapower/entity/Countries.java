@@ -4,6 +4,8 @@ import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -12,7 +14,7 @@ import jakarta.persistence.Table;
 public class Countries {
     
     @Id
-    @Column(name = "code", length = 2)
+    @Column(name = "code")
     private String code;
 
     @Column(name = "country", unique = true, length = 100)
@@ -24,6 +26,10 @@ public class Countries {
     public Countries(String code, String country) {
         this.code = code;
         this.country = country;
+    }
+
+    public Countries(String code) {
+        this.code = code;
     }
 
     public String getCode() {

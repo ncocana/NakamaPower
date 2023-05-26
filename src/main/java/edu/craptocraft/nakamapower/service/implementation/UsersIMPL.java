@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import edu.craptocraft.nakamapower.entity.Countries;
 import edu.craptocraft.nakamapower.entity.Users;
+import edu.craptocraft.nakamapower.repository.CountriesRepo;
 import edu.craptocraft.nakamapower.repository.UsersRepo;
 import edu.craptocraft.nakamapower.service.UsersService;
 
@@ -15,6 +17,8 @@ public class UsersIMPL implements UsersService {
     @Autowired
     private UsersRepo repo;
 
+    private static CountriesRepo repoCountries;
+
     @Override
     public Users create(Users user) {
         user.setId(user.getId());
@@ -23,7 +27,7 @@ public class UsersIMPL implements UsersService {
         user.setPassword(user.getPassword());
         user.setLastLog(user.getLastLog());
         user.setSession(user.getSession());
-        user.setCountry(user.getCountry());
+        user.setIdCountry(user.getIdCountry());
         return this.repo.save(user);
     }
 
@@ -45,13 +49,17 @@ public class UsersIMPL implements UsersService {
         user.setPassword(user.getPassword());
         user.setLastLog(user.getLastLog());
         user.setSession(user.getSession());
-        user.setCountry(user.getCountry());
+        user.setIdCountry(user.getIdCountry());
         return this.repo.save(user);
     }
 
     @Override
     public void delete(int id) {
         this.repo.deleteById(id);
+    }
+
+    public static Countries getCountry(String id) {
+        return repoCountries.findById(id).orElse(null);
     }
 
 }
