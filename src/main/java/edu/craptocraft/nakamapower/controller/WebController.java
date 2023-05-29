@@ -14,6 +14,7 @@ import edu.craptocraft.nakamapower.entity.Users;
 import edu.craptocraft.nakamapower.service.CountriesService;
 import edu.craptocraft.nakamapower.service.FriendshipsService;
 import edu.craptocraft.nakamapower.service.LoginService;
+import edu.craptocraft.nakamapower.service.MessagesService;
 import edu.craptocraft.nakamapower.service.UsersService;
 
 @RestController
@@ -30,6 +31,9 @@ public class WebController {
     
     @Autowired
     private FriendshipsService serviceFriendships;
+    
+    @Autowired
+    private MessagesService serviceMessages;
 
     private Users currentUser = null;
 
@@ -37,6 +41,9 @@ public class WebController {
     private static final String SIGN_UP = "sign-up";
     private static final String FRIENDSHIPS = "friendships";
     private static final String FRIENDSHIPS_CREATE = "friendships-create";
+    private static final String MESSAGES = "messages";
+    private static final String MESSAGES_SEND = "send-message";
+    private static final String MESSAGES_SEE = "see-message";
 
     @GetMapping("/")
     public RedirectView root() {
@@ -125,6 +132,55 @@ public class WebController {
         if (currentUser != null) {
             serviceFriendships.delete(id);
             return new RedirectView("/" + FRIENDSHIPS);
+        } else {
+            return new RedirectView("/" + LOGIN);
+        }
+    }
+
+    @GetMapping("/friendships/messages")
+    public Object friendshipsMessages() {
+        if (currentUser != null) {
+            ModelAndView modelAndView = new ModelAndView(MESSAGES);
+            modelAndView.addObject("currentUser", currentUser);
+            modelAndView.addObject("users", serviceUsers.getAll());
+            modelAndView.addObject("messages", serviceMessages.getAll());
+            return modelAndView;
+        } else {
+            return new RedirectView("/" + LOGIN);
+        }
+    }
+
+    @GetMapping("/friendships/messages/{id}")
+    public Object friendshipsMessagesGet(@PathVariable int id) {
+        if (currentUser != null) {
+            ModelAndView modelAndView = new ModelAndView(MESSAGES_SEE);
+            modelAndView.addObject("currentUser", currentUser);
+            modelAndView.addObject("users", serviceUsers.getAll());
+            modelAndView.addObject("messages", serviceMessages.getAll());
+            return modelAndView;
+        } else {
+            return new RedirectView("/" + LOGIN);
+        }
+    }
+
+    @GetMapping("/friendships/messages/send")
+    public Object friendshipsMessagesSend() {
+        if (currentUser != null) {
+            ModelAndView modelAndView = new ModelAndView();
+            modelAndView.setViewName(MESSAGES_SEND);
+            modelAndView.addObject("currentUser", currentUser);
+            modelAndView.addObject("users", serviceUsers.getAll());
+            return modelAndView;
+        } else {
+            return new RedirectView("/" + LOGIN);
+        }
+    }
+
+    @GetMapping("/friendships/messages/delete/{id}")
+    public Object friendshipsMessagesDelete(@PathVariable int id) {
+        if (currentUser != null) {
+            serviceMessages.delete(id);
+            return new RedirectView("/friendships/" + MESSAGES);
         } else {
             return new RedirectView("/" + LOGIN);
         }

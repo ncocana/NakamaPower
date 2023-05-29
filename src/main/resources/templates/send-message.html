@@ -23,51 +23,57 @@
         </header>
 
         <main>
-            <h1 class="text-center">Add a friend</h1>
+            <h1 class="text-center">Send a message</h1>
             <div class="form-group">
-                <label for="selectUser">User</label>
-                <select id="selectUser" class="form-select" required th:field="*{users}">
-                    <option disabled selected value="">Select a user</option>
+                <label for="selectSender">Sender</label>
+                <select id="selectSender" class="form-select" required th:field="*{users}">
+                    <option disabled selected value="">Select a sender</option>
                     <option th:each="user : ${users}" th:if="${currentUser.id == user.id}" th:value="${user.id}" th:text="${user.user}">User</option>
                 </select>
             </div>
             <div class="form-group">
-                <label for="selectFriend">Friend</label>
-                <select id="selectFriend" class="form-select" required>
-                    <option disabled selected value="">Select a friend</option>
+                <label for="selectReceptor">Receptor</label>
+                <select id="selectReceptor" class="form-select" required>
+                    <option disabled selected value="">Select a receptor</option>
                     <option th:each="user : ${users}" th:if="${currentUser.id != user.id}" th:value="${user.id}" th:text="${user.user}">Friend</option>
                 </select>
             </div>
-            <div class="text-center"><button type="submit" class="button" id="createButton">Add</button></div>
+            <div class="form-group">
+                <label for="textMessage">Message</label>
+                <textarea type="text" class="form-input" id="textMessage" placeholder="Enter message"></textarea>
+            </div>
+            <div class="text-center"><button type="submit" class="button" id="sendButton">Send message</button></div>
         </main>
 
         <script>
             $(document).ready(function() {
-                $('#createButton').click(function() {
-                    var user = $('#selectUser').val();
-                    var friend = $('#selectFriend').val();
+                $('#sendButton').click(function() {
+                    var sender = $('#selectSender').val();
+                    var receptor = $('#selectReceptor').val();
+                    var message = $('#textMessage').val();
                     // Validate if the data introduced is not empty.
-                    if (user == null || friend == null) {
+                    if (sender == null || receptor == null || message == null) {
                         alert('Please enter valid data.');
                         return;
                     }
                     var data = {
-                        "idUser": user,
-                        "idFriend": friend
+                        "sender": sender,
+                        "receptor": receptor,
+                        "text": message
                     };
                     $.ajax({
-                        url: '/friendships/create',
+                        url: '/messages/create',
                         type: 'POST',
                         data: JSON.stringify(data),
                         contentType: 'application/json; charset=utf-8',
                         dataType: 'json',
                         complete: function(response) {
-                            window.location.href = '/friendships';
+                            window.location.href = '/friendships/messages';
                         }
                     });
                 });
             });
-            
+
             $(document).ready(function() {
                 $('#logoutButton').click(function() {
                     $.ajax({

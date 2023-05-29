@@ -23,51 +23,32 @@
         </header>
 
         <main>
-            <h1 class="text-center">Add a friend</h1>
-            <div class="form-group">
-                <label for="selectUser">User</label>
-                <select id="selectUser" class="form-select" required th:field="*{users}">
-                    <option disabled selected value="">Select a user</option>
-                    <option th:each="user : ${users}" th:if="${currentUser.id == user.id}" th:value="${user.id}" th:text="${user.user}">User</option>
-                </select>
+            <h1 class="text-center">Your messages</h1>
+            <div>
+                <a th:href="@{/friendships/messages/send}" class="btn btn-info">Send message</a>
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Sender</th>
+                            <th>Email</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="output">
+                        <tr th:if="${currentUser.id == message.receptor.id}" th:each="message : ${messages}">
+                            <td th:text="${message.sender.user}">Sender</td>
+                            <td th:text="${message.sender.email}">Email</td>
+                            <td>
+                                <a th:href="@{/friendships/messages/{id}(id=${message.id})}" class="btn btn-info">See message</a>
+                                <a th:href="@{/friendships/messages/delete/{id}(id=${message.id})}" class="btn btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <div class="form-group">
-                <label for="selectFriend">Friend</label>
-                <select id="selectFriend" class="form-select" required>
-                    <option disabled selected value="">Select a friend</option>
-                    <option th:each="user : ${users}" th:if="${currentUser.id != user.id}" th:value="${user.id}" th:text="${user.user}">Friend</option>
-                </select>
-            </div>
-            <div class="text-center"><button type="submit" class="button" id="createButton">Add</button></div>
         </main>
 
         <script>
-            $(document).ready(function() {
-                $('#createButton').click(function() {
-                    var user = $('#selectUser').val();
-                    var friend = $('#selectFriend').val();
-                    // Validate if the data introduced is not empty.
-                    if (user == null || friend == null) {
-                        alert('Please enter valid data.');
-                        return;
-                    }
-                    var data = {
-                        "idUser": user,
-                        "idFriend": friend
-                    };
-                    $.ajax({
-                        url: '/friendships/create',
-                        type: 'POST',
-                        data: JSON.stringify(data),
-                        contentType: 'application/json; charset=utf-8',
-                        dataType: 'json',
-                        complete: function(response) {
-                            window.location.href = '/friendships';
-                        }
-                    });
-                });
-            });
-            
             $(document).ready(function() {
                 $('#logoutButton').click(function() {
                     $.ajax({
