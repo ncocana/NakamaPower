@@ -42,6 +42,10 @@ public class Friendships {
         this.idFriend = FriendshipsIMPL.getUser(idFriend);
     }
 
+    public Friendships(int id) {
+        this.id = id;
+    }
+
     public int getId() {
         return this.id;
     }
