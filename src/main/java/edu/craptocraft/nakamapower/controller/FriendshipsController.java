@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import edu.craptocraft.nakamapower.entity.Friendships;
 import edu.craptocraft.nakamapower.service.FriendshipsService;
-import jakarta.persistence.NoResultException;
 
 @RestController
 @RequestMapping("/friendships")
@@ -31,8 +30,8 @@ public class FriendshipsController {
 
     @GetMapping(path = "/get/all")
     public ResponseEntity<?> getAll() {
-        List<Friendships> listDoctors = this.serviceFriendships.getAll();
-        return ResponseEntity.ok(listDoctors);
+        List<Friendships> listFriendships = this.serviceFriendships.getAll();
+        return ResponseEntity.ok(listFriendships);
     }
 
     @GetMapping(path = "/get/{id}")

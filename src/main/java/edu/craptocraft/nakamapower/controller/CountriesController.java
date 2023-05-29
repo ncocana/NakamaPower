@@ -30,8 +30,8 @@ public class CountriesController {
 
     @GetMapping(path = "/get/all")
     public ResponseEntity<?> getAll() {
-        List<Countries> listDoctors = this.serviceCountries.getAll();
-        return ResponseEntity.ok(listDoctors);
+        List<Countries> listCountries = this.serviceCountries.getAll();
+        return ResponseEntity.ok(listCountries);
     }
 
     @GetMapping(path = "/get/{id}")
