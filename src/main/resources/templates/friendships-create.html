@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Add a friend | NakamaPower</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="initial-scale=1, width=device-width">
+        <link rel="stylesheet" th:href="@{/css/main.css}">
+        <link rel="icon" type="image/png" th:href="@{/img/favicon.png}">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    </head>
+    <body>
+        <header>
+            <nav class="nav">
+                <a href="/" class="logo nav-link">NakamaPower</a>
+                <ul class="nav-menu">
+                    <li class="nav-menu-item"><a href="/" class="nav-menu-link">Home</a></li>
+                    <li class="nav-menu-item"><a href="/friendships/create" class="nav-menu-link">Add a friend</a></li>
+                    <li class="nav-menu-item"><a href="#" class="nav-menu-link" id="logoutButton"><span class="glyphicon glyphicon-log-in"></span> Log out</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <h1 class="text-center">Add a friend</h1>
+            <div class="form-group">
+                <label for="selectUser">User</label>
+                <select id="selectUser" class="form-select" required th:field="*{users}">
+                    <option disabled selected value="">Select a user</option>
+                    <option th:each="user : ${users}" th:if="${currentUser.id == user.id}" th:value="${user.id}" th:text="${user.user}">User</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="selectFriend">Friend</label>
+                <select id="selectFriend" class="form-select" required>
+                    <option disabled selected value="">Select a friend</option>
+                    <option th:each="user : ${users}" th:if="${currentUser.id != user.id}" th:value="${user.id}" th:text="${user.user}">Friend</option>
+                </select>
+            </div>
+            <div class="text-center"><button type="submit" class="button" id="createButton">Add</button></div>
+        </main>
+
+        <script>
+            $(document).ready(function() {
+                $('#createButton').click(function() {
+                    var user = $('#selectUser').val();
+                    var friend = $('#selectFriend').val();
+                    // Validate if the data introduced is not empty.
+                    if (user == null || friend == null) {
+                        alert('Please enter valid data.');
+                        return;
+                    }
+                    var data = {
+                        "idUser": user,
+                        "idFriend": friend
+                    };
+                    $.ajax({
+                        url: '/friendships/create',
+                        type: 'POST',
+                        data: JSON.stringify(data),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        complete: function(response) {
+                            window.location.href = '/friendships';
+                        }
+                    });
+                });
+            });
+            
+            $(document).ready(function() {
+                $('#logoutButton').click(function() {
+                    $.ajax({
+                        url: '/logout-process',
+                        type: 'POST',
+                        complete: function(response) {
+                            // console.log(response.responseJSON);
+                            if (response.responseJSON == true) {
+                                alert("Ups! Something weird is happening and you can't log out...")
+                            }
+                            if (response.responseJSON == false) {
+                                window.location.href = '/';
+                            }
+                        }
+                    });
+                });
+            });
+        </script>
+    </body>
+</html>

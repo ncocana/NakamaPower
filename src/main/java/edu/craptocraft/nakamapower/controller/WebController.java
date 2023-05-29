@@ -37,17 +37,16 @@ public class WebController {
     private static final String SIGN_UP = "sign-up";
     private static final String FRIENDSHIPS = "friendships";
     private static final String FRIENDSHIPS_CREATE = "friendships-create";
-    private static final String FRIENDSHIPS_UPDATE = "friendships-update";
 
     @GetMapping("/")
     public RedirectView root() {
-        return new RedirectView(LOGIN);
+        return new RedirectView("/" + LOGIN);
     }
 
     @GetMapping("/login")
     public Object login() {
         if (currentUser != null) {
-            return new RedirectView(FRIENDSHIPS);
+            return new RedirectView("/" + FRIENDSHIPS);
         } else {
             return new ModelAndView(LOGIN);
         }
@@ -89,24 +88,26 @@ public class WebController {
         if (currentUser != null) {
             return new RedirectView(FRIENDSHIPS);
         } else {
-            return new ModelAndView(SIGN_UP);
+            ModelAndView modelAndView = new ModelAndView(SIGN_UP);
+            modelAndView.addObject("countries", serviceCountries.getAll());
+            return modelAndView;
         }
     }
 
     @GetMapping("/friendships")
-    public Object prescriptionsManagement() {
+    public Object friendshipsMenu() {
         if (currentUser != null) {
             ModelAndView modelAndView = new ModelAndView(FRIENDSHIPS);
             modelAndView.addObject("currentUser", currentUser);
             modelAndView.addObject("friendships", serviceFriendships.getAll());
             return modelAndView;
         } else {
-            return new RedirectView(LOGIN);
+            return new RedirectView("/" + LOGIN);
         }
     }
 
     @GetMapping("/friendships/create")
-    public Object discharge() {
+    public Object friendshipsCreate() {
         if (currentUser != null) {
             ModelAndView modelAndView = new ModelAndView();
             modelAndView.setViewName(FRIENDSHIPS_CREATE);
@@ -115,31 +116,17 @@ public class WebController {
             modelAndView.addObject("countries", serviceCountries.getAll());
             return modelAndView;
         } else {
-            return new RedirectView(LOGIN);
-        }
-    }
-
-    @GetMapping("/friendships/update/{id}")
-    public Object prescriptionsManagementUpdate(@PathVariable int id) {
-        if (currentUser != null) {
-            ModelAndView modelAndView = new ModelAndView(FRIENDSHIPS_UPDATE);
-            modelAndView.addObject("currentUser", currentUser);
-            modelAndView.addObject("users", serviceUsers.getAll());
-            modelAndView.addObject("countries", serviceCountries.getAll());
-            modelAndView.addObject("friendships", serviceFriendships.getOne(id));
-            return modelAndView;
-        } else {
-            return new RedirectView(LOGIN);
+            return new RedirectView("/" + LOGIN);
         }
     }
 
     @GetMapping("/friendships/delete/{id}")
-    public Object prescriptionsManagementDelete(@PathVariable int id) {
+    public Object friendshipsMenuDelete(@PathVariable int id) {
         if (currentUser != null) {
             serviceFriendships.delete(id);
-            return new RedirectView(FRIENDSHIPS);
+            return new RedirectView("/" + FRIENDSHIPS);
         } else {
-            return new RedirectView(LOGIN);
+            return new RedirectView("/" + LOGIN);
         }
     }
 
