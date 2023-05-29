@@ -36,15 +36,34 @@
                         </tr>
                     </thead>
                     <tbody id="output">
-                        <tr th:if="${currentUser.id == friendship.idUser.id}" th:each="friendship : ${friendships}">
-                            <td th:text="${friendship.idFriend.user}">Username</td>
-                            <td th:text="${friendship.idFriend.email}">Email</td>
+                        <tr th:if="${currentUser.id == friendship.idUser.id} or ${currentUser.id == friendship.idFriend.id}" th:each="friendship : ${friendships}">
+                            <!-- Username -->
                             <td>
-                                <span th:if="${friendship.idFriend.lastLog != null}" th:text="${friendship.idFriend.lastLog}"></span>
-                                <span th:unless="${friendship.idFriend.lastLog != null}">Never</span>
+                                <span th:if="${currentUser.id == friendship.idUser.id}" th:text="${friendship.idFriend.user}"></span>
+                                <span th:unless="${currentUser.id == friendship.idUser.id}" th:text="${friendship.idUser.user}"></span>
                             </td>
-                            <td th:text="${friendship.idFriend.idCountry.country}">Country</td>
+                            <!-- Email -->
                             <td>
+                                <span th:if="${currentUser.id == friendship.idUser.id}" th:text="${friendship.idFriend.email}"></span>
+                                <span th:unless="${currentUser.id == friendship.idUser.id}" th:text="${friendship.idUser.email}"></span>
+                            </td>
+                            <!-- Last log -->
+                            <td>
+                                <span th:if="${currentUser.id == friendship.idUser.id && friendship.idFriend.lastLog != null}"
+                                    th:text="${friendship.idFriend.lastLog}"></span>
+                                <span th:if="${currentUser.id == friendship.idFriend.id && friendship.idUser.lastLog != null}"
+                                    th:text="${friendship.idUser.lastLog}"></span>
+                                <span th:unless="${(currentUser.id == friendship.idUser.id && friendship.idFriend.lastLog != null) ||
+                                                  (currentUser.id == friendship.idFriend.id && friendship.idUser.lastLog != null)}">Never</span>
+                            </td>
+                            <!-- Country -->
+                            <td>
+                                <span th:if="${currentUser.id == friendship.idUser.id}" th:text="${friendship.idFriend.idCountry.country}"></span>
+                                <span th:unless="${currentUser.id == friendship.idUser.id}" th:text="${friendship.idUser.idCountry.country}"></span>
+                            </td>
+                            <!-- Actions -->
+                            <td>
+                                <a th:href="@{/friendships/chat/{id}(id=${friendship.id})}" class="btn btn-info">Chat</a>
                                 <a th:href="@{/friendships/delete/{id}(id=${friendship.id})}" class="btn btn-danger">Delete</a>
                             </td>
                         </tr>

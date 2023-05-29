@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Friendships | NakamaPower</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="initial-scale=1, width=device-width">
+        <link rel="stylesheet" th:href="@{/css/main.css}">
+        <link rel="icon" type="image/png" th:href="@{/img/favicon.png}">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    </head>
+    <body>
+        <header>
+            <nav class="nav">
+                <a href="/" class="logo nav-link">NakamaPower</a>
+                <ul class="nav-menu">
+                    <li class="nav-menu-item"><a href="/" class="nav-menu-link">Home</a></li>
+                    <li class="nav-menu-item"><a href="/friendships/create" class="nav-menu-link">Add a friend</a></li>
+                    <li class="nav-menu-item"><a href="/friendships/messages" class="nav-menu-link">Messages</a></li>
+                    <li class="nav-menu-item"><a href="#" class="nav-menu-link" id="logoutButton"><span class="glyphicon glyphicon-log-in"></span> Log out</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <h1 class="text-center">Chat</h1>
+            <div th:if="${friendship.id == message.chat.id}" th:each="message : ${messages}">
+                <p th:text="${message.sender.user} + ' [' + ${message.date} + ']: ' + ${message.text}">Message</p>
+            </div>
+            
+            <input type="text" class="form-input" id="inputMessage" placeholder="Send a message...">
+
+            <input type="number" class="form-input" id="inputIdChat" th:value="${friendship.id}" hidden readonly>
+            <input type="number" class="form-input" id="inputSender" th:value="${currentUser.id}" hidden readonly>
+            <input type="number" class="form-input" id="inputReceptor" th:value="${friendship.idFriend.id}" hidden readonly>
+            <button type="submit" id="sendButton" class="button">Send</button>
+        </main>
+
+        <script>
+            $(document).ready(function() {
+                $('#sendButton').click(function() {
+                    var idChat = $('#inputIdChat').val();
+                    var sender = $('#inputSender').val();
+                    var receptor = $('#inputReceptor').val();
+                    var message = $('#inputMessage').val();
+                    // Validate if the data introduced is not empty.
+                    if (message == null || message == "") {
+                        alert('Please enter valid data.');
+                        return;
+                    }
+                    var data = {
+                        "chat": idChat,
+                        "sender": sender,
+                        "receptor": receptor,
+                        "text": message
+                    };
+                    $.ajax({
+                        url: '/messages/create',
+                        type: 'POST',
+                        data: JSON.stringify(data),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        complete: function(response) {
+                            window.location.reload();
+                        }
+                    });
+                });
+            });
+
+            $(document).ready(function() {
+                $('#logoutButton').click(function() {
+                    $.ajax({
+                        url: '/logout-process',
+                        type: 'POST',
+                        complete: function(response) {
+                            // console.log(response.responseJSON);
+                            if (response.responseJSON == true) {
+                                alert("Ups! Something weird is happening and you can't log out...")
+                            }
+                            if (response.responseJSON == false) {
+                                window.location.href = '/';
+                            }
+                        }
+                    });
+                });
+            });
+        </script>
+    </body>
+</html>

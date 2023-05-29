@@ -7,8 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import edu.craptocraft.nakamapower.entity.Countries;
+import edu.craptocraft.nakamapower.entity.Friendships;
 import edu.craptocraft.nakamapower.entity.Users;
 import edu.craptocraft.nakamapower.service.CountriesService;
+import edu.craptocraft.nakamapower.service.FriendshipsService;
 import edu.craptocraft.nakamapower.service.UsersService;
 
 @SpringBootApplication
@@ -23,6 +25,9 @@ public class App implements CommandLineRunner
 
     @Autowired
     private UsersService serviceUsers;
+
+    @Autowired
+    private FriendshipsService serviceFriendships;
     
     @Override
     public void run(String... args) throws Exception {
@@ -40,6 +45,11 @@ public class App implements CommandLineRunner
             serviceUsers.create(user1);
             serviceUsers.create(user2);
             serviceUsers.create(user3);
+
+            Friendships friendship1 = new Friendships(new Users(3), new Users(2));
+            Friendships friendship2 = new Friendships(new Users(3), new Users(1));
+            serviceFriendships.create(friendship1);
+            serviceFriendships.create(friendship2);
         } catch (DataIntegrityViolationException e) {
             // Initial data has already been created.
             // Do nothing.

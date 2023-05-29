@@ -1,5 +1,6 @@
 package edu.craptocraft.nakamapower.entity;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 import edu.craptocraft.nakamapower.service.implementation.MessagesIMPL;
@@ -22,6 +23,10 @@ public class Messages {
     private int id;
 
     @ManyToOne
+    @JoinColumn(name = "chat", nullable = false)
+    private Friendships chat;
+
+    @ManyToOne
     @JoinColumn(name = "sender", nullable = false)
     private Users sender;
 
@@ -32,19 +37,26 @@ public class Messages {
     @Column(name = "text")
     private String text;
 
+    @Column(name = "date")
+    private LocalDate date;
+
     public Messages() {
     }
 
-    public Messages(Users sender, Users receptor, String text) {
-        this.sender = sender;
-        this.receptor = receptor;
+    public Messages(Friendships chat, String text) {
+        this.chat = chat;
+        this.sender = chat.getIdUser();
+        this.receptor = chat.getIdFriend();
         this.text = text;
+        this.date = null;
     }
 
-    public Messages(int idSender, int idReceptor, String text) {
+    public Messages(int idChat, int idSender, int idReceptor, String text) {
+        this.chat = MessagesIMPL.getFriendship(idChat);
         this.sender = MessagesIMPL.getUser(idSender);
         this.receptor = MessagesIMPL.getUser(idReceptor);
         this.text = text;
+        this.date = null;
     }
 
     public Messages(int id) {
@@ -57,6 +69,14 @@ public class Messages {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Friendships getChat() {
+        return this.chat;
+    }
+
+    public void setChat(Friendships chat) {
+        this.chat = chat;
     }
 
     public Users getSender() {
@@ -81,6 +101,14 @@ public class Messages {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public LocalDate getDate() {
+        return this.date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     @Override

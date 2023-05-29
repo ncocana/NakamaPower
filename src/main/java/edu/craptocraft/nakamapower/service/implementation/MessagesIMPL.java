@@ -1,12 +1,15 @@
 package edu.craptocraft.nakamapower.service.implementation;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import edu.craptocraft.nakamapower.entity.Friendships;
 import edu.craptocraft.nakamapower.entity.Messages;
 import edu.craptocraft.nakamapower.entity.Users;
+import edu.craptocraft.nakamapower.repository.FriendshipsRepo;
 import edu.craptocraft.nakamapower.repository.MessagesRepo;
 import edu.craptocraft.nakamapower.repository.UsersRepo;
 import edu.craptocraft.nakamapower.service.MessagesService;
@@ -18,13 +21,16 @@ public class MessagesIMPL implements MessagesService {
     private MessagesRepo repo;
 
     private static UsersRepo repoUsers;
+    private static FriendshipsRepo repoFriendships;
 
     @Override
     public Messages create(Messages message) {
         message.setId(message.getId());
+        message.setChat(message.getChat());
         message.setSender(message.getSender());
         message.setReceptor(message.getReceptor());
         message.setText(message.getText());
+        message.setDate(LocalDate.now());
         return this.repo.save(message);
     }
 
@@ -41,9 +47,11 @@ public class MessagesIMPL implements MessagesService {
     @Override
     public Messages update(int id, Messages message) {
         message.setId(id);
+        message.setChat(message.getChat());
         message.setSender(message.getSender());
         message.setReceptor(message.getReceptor());
         message.setText(message.getText());
+        message.setDate(LocalDate.now());
         return this.repo.save(message);
     }
 
@@ -54,6 +62,10 @@ public class MessagesIMPL implements MessagesService {
 
     public static Users getUser(int id) {
         return repoUsers.findById(id).orElse(null);
+    }
+
+    public static Friendships getFriendship(int id) {
+        return repoFriendships.findById(id).orElse(null);
     }
 
 }

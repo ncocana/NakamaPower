@@ -44,6 +44,7 @@ public class WebController {
     private static final String MESSAGES = "messages";
     private static final String MESSAGES_SEND = "send-message";
     private static final String MESSAGES_SEE = "see-message";
+    private static final String CHAT = "chat";
 
     @GetMapping("/")
     public RedirectView root() {
@@ -132,6 +133,20 @@ public class WebController {
         if (currentUser != null) {
             serviceFriendships.delete(id);
             return new RedirectView("/" + FRIENDSHIPS);
+        } else {
+            return new RedirectView("/" + LOGIN);
+        }
+    }
+
+    @GetMapping("/friendships/chat/{id}")
+    public Object friendshipsChat(@PathVariable int id) {
+        if (currentUser != null) {
+            ModelAndView modelAndView = new ModelAndView(CHAT);
+            modelAndView.addObject("currentUser", currentUser);
+            modelAndView.addObject("users", serviceUsers.getAll());
+            modelAndView.addObject("messages", serviceMessages.getAll());
+            modelAndView.addObject("friendship", serviceFriendships.getOne(id));
+            return modelAndView;
         } else {
             return new RedirectView("/" + LOGIN);
         }
