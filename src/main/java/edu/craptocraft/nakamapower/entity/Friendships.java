@@ -1,30 +1,32 @@
 package edu.craptocraft.nakamapower.entity;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 import edu.craptocraft.nakamapower.service.implementation.FriendshipsIMPL;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "friendship")
-@IdClass(FriendshipsId.class)
-public class Friendships implements Serializable {
-    
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "idUser")
-    private Users idUser;
+public class Friendships {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+    
     @ManyToOne
-    @JoinColumn(name = "idFriend")
+    @JoinColumn(name = "idUser", nullable = false)
+    private Users idUser;
+
+    @ManyToOne
+    @JoinColumn(name = "idFriend", nullable = false)
     private Users idFriend;
 
     public Friendships() {
@@ -38,6 +40,14 @@ public class Friendships implements Serializable {
     public Friendships(int idUser, int idFriend) {
         this.idUser = FriendshipsIMPL.getUser(idUser);
         this.idFriend = FriendshipsIMPL.getUser(idFriend);
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Users getIdUser() {
@@ -63,12 +73,12 @@ public class Friendships implements Serializable {
         if (o == null || getClass() != o.getClass())
             return false;
         Friendships that = (Friendships) o;
-        return Objects.equals(idUser, that.idUser) && Objects.equals(idFriend, that.idFriend);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idUser, idFriend);
+        return Objects.hash(this.id);
     }
 
 }

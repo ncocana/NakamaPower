@@ -36,25 +36,23 @@ public class FriendshipsController {
     }
 
     @GetMapping(path = "/get/{id}")
-    public ResponseEntity<?> getOne(@PathVariable Friendships id) {
+    public ResponseEntity<?> getOne(@PathVariable int id) {
         Friendships singleFriendship = this.serviceFriendships.getOne(id);
         return ResponseEntity.ok(singleFriendship);
     }
 
-    @PutMapping(path = "update/user/{idUser}/friend/{idFriend}")
-    public ResponseEntity<?> update(@PathVariable int idUser, @PathVariable int idFriend, @RequestBody Friendships friendship) {
+    @PutMapping(path = "update/{id}")
+    public ResponseEntity<?> update(@PathVariable int id, @RequestBody Friendships friendship) {
         try {
-            Friendships updatedFriendship = this.serviceFriendships.update(idUser, idFriend, friendship);
+            Friendships updatedFriendship = this.serviceFriendships.update(id, friendship);
             return ResponseEntity.status(HttpStatus.OK).body(updatedFriendship);
         } catch (DataIntegrityViolationException e) {
             return ResponseEntity.badRequest().body("An error occurred: " + e.getMessage());
-        } catch (NoResultException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Friendship not found");
         }
     }
 
     @DeleteMapping(path= "delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable Friendships id) {
+    public ResponseEntity<?> delete(@PathVariable int id) {
         this.serviceFriendships.delete(id);
         return ResponseEntity.ok().build();
     }

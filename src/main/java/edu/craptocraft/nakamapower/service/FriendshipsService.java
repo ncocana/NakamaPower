@@ -10,10 +10,10 @@ public interface FriendshipsService {
 
     public List<Friendships> getAll();
 
-    public Friendships getOne(Friendships idUser);
+    public Friendships getOne(int id);
 
-    public Friendships update(int idUser, int idFriend, Friendships friendship);
+    public Friendships update(int id, Friendships friendship);
 
-    public void delete(Friendships idUser);
+    public void delete(int id);
 
 }
