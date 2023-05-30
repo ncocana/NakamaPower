@@ -167,3 +167,11 @@ small {
 .shake {
     animation: shake 0.5s;
 }
+
+.textLeft {
+    text-align: left;
+}
+
+.textRight {
+    text-align: right;
+}
