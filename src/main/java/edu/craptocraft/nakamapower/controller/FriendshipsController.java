@@ -21,6 +21,16 @@ public class FriendshipsController {
     @PostMapping(path = "/create")
     public ResponseEntity<?> create(@RequestBody Friendships friendship) {
         try {
+            List<Friendships> listFriendships = this.serviceFriendships.getAll();
+
+            boolean friendshipExists = listFriendships.stream()
+                    .anyMatch(friend -> (friend.getIdFriend().getId() == friendship.getIdFriend().getId() || friend.getIdFriend().getId() == friendship.getIdUser().getId())
+                            && (friend.getIdUser().getId() == friendship.getIdFriend().getId() || friend.getIdUser().getId() == friendship.getIdUser().getId()));
+
+            if (friendshipExists) {
+                return ResponseEntity.badRequest().body("This friendship already exists.");
+            }
+
             Friendships createdFriendship = this.serviceFriendships.create(friendship);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdFriendship);
         } catch (DataIntegrityViolationException e) {
