@@ -1,5 +1,7 @@
 package edu.craptocraft.nakamapower.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,7 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import edu.craptocraft.nakamapower.entity.Friendships;
 import edu.craptocraft.nakamapower.entity.Login;
+import edu.craptocraft.nakamapower.entity.Messages;
 import edu.craptocraft.nakamapower.entity.Users;
 import edu.craptocraft.nakamapower.service.CountriesService;
 import edu.craptocraft.nakamapower.service.FriendshipsService;
@@ -131,6 +135,12 @@ public class WebController {
     @GetMapping("/friendships/delete/{id}")
     public Object friendshipsMenuDelete(@PathVariable int id) {
         if (currentUser != null) {
+            List<Messages> messages = serviceMessages.getAll();
+            for (Messages message : messages) {
+                if (message.getChat().getId() == id) {
+                    serviceMessages.delete(message.getId());
+                }
+            }
             serviceFriendships.delete(id);
             return new RedirectView("/" + FRIENDSHIPS);
         } else {
