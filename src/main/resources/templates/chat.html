@@ -25,7 +25,7 @@
         <main>
             <h1 class="text-center">Chat</h1>
             <div th:if="${friendship.id == message.chat.id}" th:each="message : ${messages}">
-                <p th:text="${message.sender.user} + ' [' + ${message.date} + ']: ' + ${message.text}">Message</p>
+                <p th:text="${message.sender.user} + ' [' + ${message.date} + ']: ' + ${message.text}" th:class="${message.sender.id == currentUser.id ? 'textRight' : 'textLeft'}">Message</p>
             </div>
             
             <input type="text" class="form-input" id="inputMessage" placeholder="Send a message...">

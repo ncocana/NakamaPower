@@ -62,7 +62,12 @@
                         contentType: 'application/json; charset=utf-8',
                         dataType: 'json',
                         complete: function(response) {
-                            window.location.href = '/friendships';
+                            if (response.status == 200 || response.status == 201) {
+                                window.location.href = '/friendships';
+                            }
+                            if (response.status == 400) {
+                                alert(response.responseText);
+                            }
                         }
                     });
                 });
