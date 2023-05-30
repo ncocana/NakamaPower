@@ -30,9 +30,14 @@
             
             <input type="text" class="form-input" id="inputMessage" placeholder="Send a message...">
 
+            <!-- Data idChat -->
             <input type="number" class="form-input" id="inputIdChat" th:value="${friendship.id}" hidden readonly>
+            <!-- Data sender -->
             <input type="number" class="form-input" id="inputSender" th:value="${currentUser.id}" hidden readonly>
-            <input type="number" class="form-input" id="inputReceptor" th:value="${friendship.idFriend.id}" hidden readonly>
+            <!-- Data receptor -->
+            <input type="number" class="form-input" id="inputReceptor" th:if="${currentUser.id == friendship.idUser.id}" th:value="${friendship.idFriend.id}" hidden readonly>
+            <input type="number" class="form-input" id="inputReceptor" th:unless="${currentUser.id == friendship.idUser.id}" th:value="${friendship.idUser.id}" hidden readonly>
+            
             <button type="submit" id="sendButton" class="button">Send</button>
         </main>
 
