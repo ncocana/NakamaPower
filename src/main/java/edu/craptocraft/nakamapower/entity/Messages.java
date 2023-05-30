@@ -51,6 +51,14 @@ public class Messages {
         this.date = null;
     }
 
+    public Messages(Friendships chat, Users sender, Users receptor, String text) {
+        this.chat = chat;
+        this.sender = sender;
+        this.receptor = receptor;
+        this.text = text;
+        this.date = null;
+    }
+
     public Messages(int idChat, int idSender, int idReceptor, String text) {
         this.chat = MessagesIMPL.getFriendship(idChat);
         this.sender = MessagesIMPL.getUser(idSender);

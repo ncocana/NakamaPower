@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import edu.craptocraft.nakamapower.entity.Friendships;
 import edu.craptocraft.nakamapower.entity.Messages;
 import edu.craptocraft.nakamapower.entity.Users;
 
@@ -28,7 +29,7 @@ public class MessagesControllerTest {
     @Test
     public void test_create() {
 
-        entity = new Messages(new Users(1), new Users(2), "Test");
+        entity = new Messages(new Friendships(1), new Users(1), new Users(2), "Test");
         ResponseEntity<?> response = controller.create(entity);
 
         assertNotNull(response);
@@ -37,9 +38,11 @@ public class MessagesControllerTest {
         Messages createdEntity = (Messages) response.getBody();
 
         assertEquals(entity.getId(), createdEntity.getId());
+        assertEquals(entity.getChat(), createdEntity.getChat());
         assertEquals(entity.getSender(), createdEntity.getSender());
         assertEquals(entity.getReceptor(), createdEntity.getReceptor());
         assertEquals(entity.getText(), createdEntity.getText());
+        assertEquals(entity.getDate(), createdEntity.getDate());
 
         ResponseEntity<?> responseDelete = controller.delete(createdEntity.getId());
 
@@ -62,7 +65,7 @@ public class MessagesControllerTest {
     @Test
     public void test_getOne() {
 
-        entity = new Messages(new Users(1), new Users(2), "Test");
+        entity = new Messages(new Friendships(1), new Users(1), new Users(2), "Test");
 
         ResponseEntity<?> createdResponse = controller.create(entity);
 
@@ -77,9 +80,11 @@ public class MessagesControllerTest {
 
         assertNotNull(retrievedEntity);
         assertEquals(entity.getId(), retrievedEntity.getId());
+        assertEquals(entity.getChat(), retrievedEntity.getChat());
         assertEquals(entity.getSender(), retrievedEntity.getSender());
         assertEquals(entity.getReceptor(), retrievedEntity.getReceptor());
         assertEquals(entity.getText(), retrievedEntity.getText());
+        assertEquals(entity.getDate(), retrievedEntity.getDate());
 
         ResponseEntity<?> responseDelete = controller.delete(retrievedEntity.getId());
 
@@ -89,7 +94,7 @@ public class MessagesControllerTest {
 
     @Test
     public void test_update() {
-        entity = new Messages(new Users(1), new Users(2), "Test");
+        entity = new Messages(new Friendships(1), new Users(1), new Users(2), "Test");
 
         ResponseEntity<?> createdResponse = controller.create(entity);
 
@@ -110,9 +115,11 @@ public class MessagesControllerTest {
         Messages updatedEntity = (Messages) updatedResponse.getBody();
 
         assertEquals(createdEntity.getId(), updatedEntity.getId());
+        assertEquals(createdEntity.getChat(), updatedEntity.getChat());
         assertEquals(createdEntity.getSender(), updatedEntity.getSender());
         assertEquals(createdEntity.getReceptor(), updatedEntity.getReceptor());
         assertEquals("Test 2", updatedEntity.getText());
+        assertEquals(createdEntity.getDate(), updatedEntity.getDate());
 
         ResponseEntity<?> responseDelete = controller.delete(updatedEntity.getId());
 
@@ -130,7 +137,7 @@ public class MessagesControllerTest {
 
         assertNotNull(beforeDeleteEntities);
 
-        entity = new Messages(new Users(1), new Users(2), "Test");
+        entity = new Messages(new Friendships(1), new Users(1), new Users(2), "Test");
 
         ResponseEntity<?> response = controller.delete(entity.getId());
 
