@@ -17,7 +17,7 @@
 
 ## Introduction
 
-This is a project proposed by our teacher for the assignature of Markup Language (*Lenguaje de Marcas*). Our task was to create a frontend for the Java backend he passed us; however, as I'm a bit of a masochist, I decided to create my own backend from zero following the idea of the original backend, as I felt it was more easy and quick to create and use my own backend that learn how to use the backend provided by the professor (which unfortunately lacked things like a framework, project management tool, or portability), and that way I could better control and resolve any errors and bugs that I could encounter while developping the application.   
+This is a project proposed by our teacher for the assignature of Markup Language (*Lenguaje de Marcas*). Our task was to create a frontend for the Java backend he passed us; however, as I'm a bit of a masochist, I decided to create my own backend from zero following the idea of the original backend, as I felt it was more easy and quick to create and use my own backend that learn how to use the backend provided by the professor (which unfortunately lacked things like a framework, Maven, or portability), and that way I could better control and resolve any errors and bugs that I could encounter while developping the application.   
 
 To achieve this, I decided to use Spring Boot to create an API REST to make HTTP petitions (POST, GET, PUT, and DELETE) to every entity (table) of the database, Thymeleaf to interact with the data received from the backend, JQuery to send HTTP petitions to the backend, MySQL for the database, and Docker to make the application portable.   
 
