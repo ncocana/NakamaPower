@@ -45,14 +45,30 @@
             <input type="number" class="form-input" id="inputReceptor" th:if="${currentUser.id == friendship.idUser.id}" th:value="${friendship.idFriend.id}" hidden readonly>
             <input type="number" class="form-input" id="inputReceptor" th:unless="${currentUser.id == friendship.idUser.id}" th:value="${friendship.idUser.id}" hidden readonly>
             
-            <div class="sendMessage">
+            <div class="sendMessageArea">
                 <textarea type="text" class="form-input" id="inputMessage" placeholder="Send a message..." rows="4"></textarea>
-                <br>
+                <span class="pull-right label label-default" id="count_message"></span>
+      	        <br>
                 <button type="submit" id="sendButton" class="button">Send</button>
             </div>
         </main>
 
         <script>
+            var text_max = 255;
+            $('#count_message').html('0 / ' + text_max );
+
+            $('#inputMessage').keyup(function() {
+                var text_length = $('#inputMessage').val().length;
+                // var text_remaining = text_max - text_length;
+                
+                $('#count_message').html(text_length + ' / ' + text_max);
+                if (text_length > text_max) {
+                    $('#count_message').addClass('label-danger');
+                } else {
+                    $('#count_message').removeClass('label-danger');
+                }
+            });
+
             $(document).ready(function() {
                 $('#sendButton').click(function() {
                     var idChat = $('#inputIdChat').val();
@@ -64,12 +80,23 @@
                         alert('Please enter valid data.');
                         return;
                     }
+
+                    var message_text_length = $('#inputMessage').val().length;
+                    if (message_text_length > text_max) {
+                        $('#count_message').addClass('shake');
+                        setTimeout(function() {
+                            $('#count_message').removeClass('shake');
+                        }, 1000);
+                        return;
+                    }
+
                     var data = {
                         "chat": idChat,
                         "sender": sender,
                         "receptor": receptor,
                         "text": message
                     };
+
                     $.ajax({
                         url: '/messages/create',
                         type: 'POST',
