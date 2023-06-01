@@ -23,12 +23,20 @@
 
         <main>
             <h1 class="text-center">Chat</h1>
-            <div th:if="${friendship.id == message.chat.id}" th:each="message : ${messages}">
-                <p th:text="${message.sender.user} + ' [' + ${message.date} + ']: ' + ${message.text}" th:class="${message.sender.id == currentUser.id ? 'textRight' : 'textLeft'}">Message</p>
+            <div class="chat">
+                <div th:if="${friendship.id == message.chat.id}" th:each="message : ${messages}" class="chatMessage">
+                    <div class="chatMessageAuthor">
+                        <p th:text="${message.sender.user}" th:class="${message.sender.id == currentUser.id ? 'textRight' : 'textLeft'}">Message Author</p>
+                    </div>
+                    <div>
+                        <p th:text="${message.text}" th:class="${message.sender.id == currentUser.id ? 'textLeft chatMessageText chatMessageTextRight' : 'textLeft chatMessageText chatMessageTextLeft'}">Message Text</p>
+                    </div>
+                    <div class="small ms-3 mb-3 rounded-3 text-muted chatMessageDate">
+                        <p th:text="${message.date}" th:class="${message.sender.id == currentUser.id ? 'textRight' : 'textLeft'}">Message Date</p>
+                    </div>
+                </div>
             </div>
             
-            <input type="text" class="form-input" id="inputMessage" placeholder="Send a message...">
-
             <!-- Data idChat -->
             <input type="number" class="form-input" id="inputIdChat" th:value="${friendship.id}" hidden readonly>
             <!-- Data sender -->
@@ -37,7 +45,11 @@
             <input type="number" class="form-input" id="inputReceptor" th:if="${currentUser.id == friendship.idUser.id}" th:value="${friendship.idFriend.id}" hidden readonly>
             <input type="number" class="form-input" id="inputReceptor" th:unless="${currentUser.id == friendship.idUser.id}" th:value="${friendship.idUser.id}" hidden readonly>
             
-            <button type="submit" id="sendButton" class="button">Send</button>
+            <div class="sendMessage">
+                <textarea type="text" class="form-input" id="inputMessage" placeholder="Send a message..." rows="4"></textarea>
+                <br>
+                <button type="submit" id="sendButton" class="button">Send</button>
+            </div>
         </main>
 
         <script>

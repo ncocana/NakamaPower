@@ -168,10 +168,76 @@ small {
     animation: shake 0.5s;
 }
 
+.chat {
+    padding: 10px 10px;
+    /* max-width: 70%; */
+    border: 1px solid #ccc;
+    border-radius: 16px;
+    overflow-y: scroll;
+    height: 50vh;
+}
+
+.chatMessage {
+    padding: 10px 0;
+}
+
+.chatMessageAuthor {
+    font-weight: bold;
+    color: #2d2d2d;
+    margin: -8px;
+    padding: 0 15px;
+}
+
+.chatMessageText {
+    /* background-color: #2e6da4; */
+    height: auto;
+    padding: 10px 10px;
+    border-radius: 15px;
+    /* word-wrap: break-word;
+    word-break: break-all;
+    overflow-wrap: normal; */
+}
+
 .textLeft {
     text-align: left;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    word-break: break-word;
+    /* padding-right: 30%; */
 }
 
 .textRight {
     text-align: right;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    word-break: break-word;
+    /* padding-left: 30%; */
+}
+
+.chatMessageTextRight {
+    background-color: rgba(57, 150, 237, 0.2);
+}
+
+.chatMessageTextLeft {
+    background-color: #f5f6f7;
+}
+
+.chatMessageDate {
+    margin: -8px;
+    padding: 0 15px;
+}
+
+textarea {
+    resize: vertical;
+}
+
+.sendMessage {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 20px 0;
 }
